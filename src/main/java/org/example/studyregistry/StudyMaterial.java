@@ -58,29 +58,57 @@ public class StudyMaterial{
         return response;
     }
 
-    public Map<String, Integer> getReferenceCountMap(){
+    public Map<String, Integer> getReferenceCountMap() {
         Map<String, Integer> response = new HashMap<>();
         response.put("Audio References", 0);
         response.put("Video References", 0);
         response.put("Text References", 0);
-        for (Reference reference : references) {
-            if (reference.getClass() == AudioReference.class) {
-                Integer audioCount = response.get("Audio References");
-                response.put("Audio References", audioCount + 1);
-            } else if (reference.getClass() == VideoReference.class) {
-                if(((VideoReference) reference).handleStreamAvailability()){
-                    Integer videoCount = response.get("Video References");
-                    response.put("Video References", videoCount + 1);
-                }
-            } else if (reference.getClass() == TextReference.class){
-                if(((TextReference) reference).handleTextAccess()){
-                    Integer textCount = response.get("Text References");
-                    response.put("Text References", textCount + 1);
-                }
-            }
-        }
+
+        response.putAll(countAudioReferences());
+        response.putAll(countVideoReferences());
+        response.putAll(countTextReferences());
+
         setReferenceCount(response);
         return response;
+    }
+
+    private Map<String, Integer> countAudioReferences() {
+        Map<String, Integer> audioCounts = new HashMap<>();
+        audioCounts.put("Audio References", 0);
+
+        for (Reference reference : references) {
+            if (reference.getClass() == AudioReference.class) {
+                audioCounts.put("Audio References", audioCounts.get("Audio References") + 1);
+            }
+        }
+
+        return audioCounts;
+    }
+
+    private Map<String, Integer> countVideoReferences() {
+        Map<String, Integer> videoCounts = new HashMap<>();
+        videoCounts.put("Video References", 0);
+
+        for (Reference reference : references) {
+            if (reference.getClass() == VideoReference.class && ((VideoReference) reference).handleStreamAvailability()) {
+                videoCounts.put("Video References", videoCounts.get("Video References") + 1);
+            }
+        }
+
+        return videoCounts;
+    }
+
+    private Map<String, Integer> countTextReferences() {
+        Map<String, Integer> textCounts = new HashMap<>();
+        textCounts.put("Text References", 0);
+
+        for (Reference reference : references) {
+            if (reference.getClass() == TextReference.class && ((TextReference) reference).handleTextAccess()) {
+                textCounts.put("Text References", textCounts.get("Text References") + 1);
+            }
+        }
+
+        return textCounts;
     }
 
 }
