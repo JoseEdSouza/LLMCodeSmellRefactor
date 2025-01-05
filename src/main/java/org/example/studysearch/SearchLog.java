@@ -37,6 +37,15 @@ public class SearchLog {
         results.add("\nLogged in: " + getLogName());
         return results;
     }
+    // Moved method from MaterialSearch class
+    public List<String> handleMaterialSearch(String text) {
+        List<String> results = new ArrayList<>();
+        results.addAll(StudyMaterial.getStudyMaterial().searchInMaterials(text));
+        addSearchHistory(text);
+        setNumUsages(getNumUsages() + 1);
+        results.add("\nLogged in: " + getLogName());
+        return results;
+    }
     public void addSearchHistory(String searchHistory) {
         this.searchHistory.add(searchHistory);
     }
