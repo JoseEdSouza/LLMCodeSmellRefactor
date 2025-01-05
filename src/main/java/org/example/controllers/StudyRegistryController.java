@@ -51,15 +51,32 @@ public class StudyRegistryController {
         studyTaskManager.addRegistry(task);
     }
 
-    private void handleSetObjective(StudyObjective objective){
+    private void handleSetObjective(StudyObjective objective) {
         handleMethodHeader("(Study Objective Edit)");
         System.out.println("Type the following info: Integer id, Integer priority " +
                 "Integer practicedDays, int day, int month, int year, String name, String title, String description, " +
                 "String topic, String objectiveInOneLine, String objectiveFullDescription, String motivation, " +
                 "Double duration, boolean isActive  \n");
-        objective.handleSetObjective(Integer.parseInt(getInput()), Integer.parseInt(getInput()),Integer.parseInt(getInput()),Integer.parseInt(getInput()),Integer.parseInt(getInput()),
-                Integer.parseInt(getInput()), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(),
-                Double.parseDouble(getInput()), Boolean.parseBoolean(getInput()));
+
+        objective.handleSetObjective(
+                new StudyObjective.Objective(
+                        Integer.parseInt(getInput()),
+                        Integer.parseInt(getInput()),
+                        Integer.parseInt(getInput()),
+                        Integer.parseInt(getInput()),
+                        Integer.parseInt(getInput()),
+                        Integer.parseInt(getInput()),
+                        getInput(),
+                        getInput(),
+                        getInput(),
+                        getInput(),
+                        getInput(),
+                        getInput(),
+                        getInput(),
+                        Double.parseDouble(getInput()),
+                        Boolean.parseBoolean(getInput())
+                )
+        );
     }
 
     private StudyObjective getStudyObjectiveInfo(){
