@@ -106,9 +106,15 @@ public class StudyRegistryController {
                 "String seasonalSteps, String basicSteps, String mainObjectiveTitle, String mainGoalTitle, String mainMaterialTopic, " +
                 "String mainTask, @NotNull  Integer numberOfSteps, boolean isImportant. " +
                 "The Date to start is today, the date to end is x days from now, type the quantity of days\n");
-        LocalDateTime createdAT = LocalDateTime.now();
-        studyPlan.assignSteps(getInput(), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(),
-                Integer.parseInt(getInput()), Boolean.parseBoolean(getInput()), createdAT, createdAT.plusDays(Long.parseLong(getInput())));
+
+        LocalDateTime now = LocalDateTime.now();
+        StudyPlan.StudyPlanParameters params = new StudyPlan.StudyPlanParameters(
+                getInput(), getInput(), getInput(), getInput(), getInput(),
+                getInput(), getInput(), getInput(), getInput(),
+                Integer.parseInt(getInput()), Boolean.parseBoolean(getInput()),
+                now, now.plusDays(Integer.parseInt(getInput()))
+        );
+        studyPlan.assignSteps(params);
     }
 
     private StudyGoal getStudyGoalInfo(){
