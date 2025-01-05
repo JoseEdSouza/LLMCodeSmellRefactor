@@ -114,9 +114,21 @@ public class StudyRegistryController {
         System.out.println("Type the following info:  AudioReference. AudioQuality audioQuality, boolean isDownloadable, " +
                 "String title, String description, String link, String accessRights, String license, String language, int rating, " +
                 "int viewCount, int shareCount \n");
-        AudioReference.AudioQuality quality =AudioReference.audioQualityAdapter(getInput());
-        audioReference.editAudio(quality, Boolean.parseBoolean(getInput()), getInput(), getInput(), getInput(), getInput(),
-                getInput(), getInput(), Integer.parseInt(getInput()), Integer.parseInt(getInput()), Integer.parseInt(getInput()));
+        var params = new AudioReference.AudioReferenceEditParams(
+                AudioReference.audioQualityAdapter(getInput()),
+                Boolean.parseBoolean(getInput()),
+                getInput(),
+                getInput(),
+                getInput(),
+                getInput(),
+                getInput(),
+                getInput(),
+                Integer.parseInt(getInput()),
+                Integer.parseInt(getInput()),
+                Integer.parseInt(getInput())
+        );
+
+        audioReference.editAudio(params);
     }
 
     private AudioReference addAudioReference(){
