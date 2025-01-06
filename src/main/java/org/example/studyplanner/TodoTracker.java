@@ -83,25 +83,18 @@ public class TodoTracker {
         this.toDos.add(toAdd);
         return toAdd.getId();
     }
-
     public void removeToDo(Integer id) {
         toDos.removeIf(toDo -> toDo.getId() == id);
     }
 
     public List<ToDo> sortTodosByPriority() {
         List<ToDo> sortedToDos = new ArrayList<>(toDos);
-        sortedToDos.sort(Comparator.comparingInt(ToDo::getPriority));
+        Collections.sort(sortedToDos);
         return sortedToDos;
     }
 
     public List<String> searchInTodos(String search) {
-        List<String> todos = new ArrayList<>();
-        for (ToDo toDo : toDos) {
-            if (toDo.getTitle().toLowerCase().contains(search.toLowerCase()) || toDo.getDescription().toLowerCase().contains(search.toLowerCase())) {
-                todos.add(toDo.toString());
-            }
-        }
-        return todos;
+        return ToDo.searchInTodos(this.toDos, search);
     }
 
 
