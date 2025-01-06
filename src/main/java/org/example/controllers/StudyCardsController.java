@@ -115,9 +115,7 @@ public class StudyCardsController {
 
     public String getRandomCardFromBox() {
         String response = "";
-        response += leitnerSystem.getMethodName();
-        List<Box> boxes = leitnerSystem.getBoxes();
-        response += leitnerSystem.getRandomCard(boxes);
+        response += leitnerSystem.getRandomCardFromBox();
         return response;
     }
 

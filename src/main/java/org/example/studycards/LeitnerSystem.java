@@ -41,12 +41,16 @@ public class LeitnerSystem extends StudyMethod{
         return boxes;
     }
 
-    public String getRandomCard(List<Box> otherBoxes){
-        if(otherBoxes == null || otherBoxes.isEmpty()){
+    public String getRandomCardFromBox() {
+        return getMethodName() + getRandomCard(getBoxes());
+    }
+
+    public String getRandomCard(List<Box> boxes) {
+        if(boxes == null || boxes.isEmpty()){
             return null;
         }
 
-        Box allBoxes = getAllCardsFromBoxes(otherBoxes);
+        Box allBoxes = getAllCardsFromBoxes(boxes);
 
         Integer randomCard = allBoxes.getRandomCard();
         if(randomCard == null){
@@ -55,6 +59,7 @@ public class LeitnerSystem extends StudyMethod{
 
         return getCardDetails(randomCard);
     }
+
 
     private Box getAllCardsFromBoxes(List<Box> otherBoxes) {
         Box allBoxes = new Box();
