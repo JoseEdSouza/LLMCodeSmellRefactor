@@ -25,6 +25,7 @@ public class SearchLog {
         numUsages = 0;
         isLocked = false;
     }
+
     public List<String> search(String text) {
         List<String> results = new ArrayList<>();
         results.addAll(CardManager.getCardManager().searchInCards(text));
@@ -37,6 +38,13 @@ public class SearchLog {
         results.add("\nLogged in: " + getLogName());
         return results;
     }
+
+    public void logSearch(String text, List<String> results) {
+        addSearchHistory(text);
+        setNumUsages(getNumUsages() + 1);
+        results.add("\nLogged in: " + getLogName());
+    }
+
     // Moved method from MaterialSearch class
     public List<String> handleMaterialSearch(String text) {
         List<String> results = new ArrayList<>();
@@ -46,18 +54,23 @@ public class SearchLog {
         results.add("\nLogged in: " + getLogName());
         return results;
     }
+
     public void addSearchHistory(String searchHistory) {
         this.searchHistory.add(searchHistory);
     }
+
     public List<String> getSearchHistory() {
         return searchHistory;
     }
+
     public void setSearchHistory(List<String> searchHistory) {
         this.searchHistory = searchHistory;
     }
+
     public Map<String, Integer> getSearchCount() {
         return searchCount;
     }
+
     public void setSearchCount(Map<String, Integer> searchCount) {
         this.searchCount = searchCount;
     }
