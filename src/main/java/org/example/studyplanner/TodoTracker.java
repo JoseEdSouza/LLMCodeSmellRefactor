@@ -27,30 +27,35 @@ public class TodoTracker {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        for (ToDo toDo : toDos) {
-            String todoInfo = toDo.toString();
-            str.append(todoInfo);
-            str.append("\n");
-            Integer id = toDo.getId();
-            List<LocalDateTime> todosDate = this.tracker.get(id);
-            if(todosDate == null){
-                str.append("No tracks found\n");
-            }else{
-                for (LocalDateTime ldt : todosDate) {
-                    String pattern = "yyyy-MM-dd HH:mm:ss";
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-                    String formattedDate = formatter.format(ldt);
-                    str.append(formattedDate);
-                    str.append("\n");
-                }
-            }
-        }
-        String response = str.toString();
-        if(response.isEmpty()){
+        if (toDos.isEmpty()) {
             return "No ToDos found";
         }
-        return response;
+
+        StringBuilder str = new StringBuilder();
+        for (ToDo toDo : toDos) {
+            str.append(toDo.toString()).append("\n");
+            str.append(getTrackInfo(toDo)).append("\n");
+        }
+        return str.toString();
+    }
+
+    private String getTrackInfo(ToDo toDo) {
+        List<LocalDateTime> todosDate = this.tracker.get(toDo.getId());
+        if (todosDate == null) {
+            return "No tracks found\n";
+        }
+
+        StringBuilder trackInfo = new StringBuilder();
+        for (LocalDateTime ldt : todosDate) {
+            trackInfo.append(formatLocalDateTime(ldt)).append("\n");
+        }
+        return trackInfo.toString();
+    }
+
+    private String formatLocalDateTime(LocalDateTime ldt) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return formatter.format(ldt);
     }
 
     public void addToDoExecutionTime(Integer id){
@@ -78,25 +83,18 @@ public class TodoTracker {
         this.toDos.add(toAdd);
         return toAdd.getId();
     }
-
     public void removeToDo(Integer id) {
         toDos.removeIf(toDo -> toDo.getId() == id);
     }
 
     public List<ToDo> sortTodosByPriority() {
         List<ToDo> sortedToDos = new ArrayList<>(toDos);
-        sortedToDos.sort(Comparator.comparingInt(ToDo::getPriority));
+        Collections.sort(sortedToDos);
         return sortedToDos;
     }
 
     public List<String> searchInTodos(String search) {
-        List<String> todos = new ArrayList<>();
-        for (ToDo toDo : toDos) {
-            if (toDo.getTitle().toLowerCase().contains(search.toLowerCase()) || toDo.getDescription().toLowerCase().contains(search.toLowerCase())) {
-                todos.add(toDo.toString());
-            }
-        }
-        return todos;
+        return ToDo.searchInTodos(this.toDos, search);
     }
 
 

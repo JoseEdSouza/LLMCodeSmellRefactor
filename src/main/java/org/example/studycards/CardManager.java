@@ -24,7 +24,7 @@ public class CardManager {
 
     public String formatCard(Integer id) {
         Card card = this.getCard(id);
-        return "[id: " + id + "] " + "Question: " + card.getQuestion() + " Answer: " + card.getAnswer();
+        return "[id: " + id + "] " + card.toString();
     }
 
     public Map<Integer, Card> getCardsMap(){

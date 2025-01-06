@@ -29,4 +29,9 @@ public class Card {
         setQuestion(question);
         setAnswer(answer);
     }
+    // Extracted Method: toString()
+    @Override
+    public String toString() {
+        return "Question: " + question + ", Answer: " + answer;
+    }
 }

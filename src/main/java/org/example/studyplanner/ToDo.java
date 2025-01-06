@@ -1,13 +1,14 @@
 package org.example.studyplanner;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ToDo implements PlannerMaterial{
+public class ToDo implements PlannerMaterial, Comparable<ToDo>{
     private Integer id;
     private String title;
     private String description;
     private int priority;
-
     public ToDo(Integer id, String title, String description, int priority) {
         this.id = id;
         this.title = title;
@@ -51,4 +52,25 @@ public class ToDo implements PlannerMaterial{
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
+    @Override
+    public int compareTo(ToDo other) {
+        return Integer.compare(this.priority, other.priority);
+    }
+    public boolean containsSearchTerm(String searchTerm) {
+        searchTerm = searchTerm.toLowerCase();
+        return getTitle().toLowerCase().contains(searchTerm) ||
+                getDescription().toLowerCase().contains(searchTerm);
+    }
+
+    public static List<String> searchInTodos(List<ToDo> toDos, String search) {
+        List<String> matchingTodos = new ArrayList<>();
+        for (ToDo toDo : toDos) {
+            if (toDo.containsSearchTerm(search)) {
+                matchingTodos.add(toDo.toString());
+            }
+        }
+        return matchingTodos;
+    }
+
 }

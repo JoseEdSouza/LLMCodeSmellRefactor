@@ -54,10 +54,8 @@ public class HabitTracker {
         return this.tracker.keySet().stream().toList();
     }
 
-    public int addHabit(String name, String motivation, Integer dailyMinutesDedication, Integer dailyHoursDedication, Integer year, Integer month, Integer day, Integer hour, Integer minute, Integer seconds, Boolean isConcluded) {
-        LocalTime lt = LocalTime.of(dailyHoursDedication, dailyMinutesDedication);
-        LocalDateTime startDate = LocalDateTime.of(year, month, day, hour, minute, seconds);
-        Habit habit = new Habit(name, motivation, lt, this.nextId, startDate, isConcluded);
+    public int addHabit(String name, String motivation, LocalTime dailyDedication, LocalDateTime startDate, Boolean isConcluded) {
+        Habit habit = new Habit(name, motivation, dailyDedication, this.nextId, startDate, isConcluded);
         this.habits.add(habit);
         int response = nextId;
         this.tracker.put(nextId, new ArrayList<>());
@@ -66,9 +64,11 @@ public class HabitTracker {
     }
 
     public int handleAddHabitAdapter(List<String> stringProperties, List<Integer> intProperties, boolean isConcluded){
-        return addHabit(stringProperties.get(0), stringProperties.get(1), intProperties.get(0), intProperties.get(1), intProperties.get(2), intProperties.get(3), intProperties.get(4), intProperties.get(5), intProperties.get(6), intProperties.get(7), isConcluded);
+        LocalDateTime startDate = LocalDateTime.of(intProperties.get(2), intProperties.get(3), intProperties.get(4),
+                intProperties.get(5), intProperties.get(6), intProperties.get(7));
+        LocalTime dailyDedication = LocalTime.of(intProperties.get(1), intProperties.get(0)); // Corrected order
+        return addHabit(stringProperties.get(0), stringProperties.get(1), dailyDedication, startDate, isConcluded);
     }
-
 
     public int addHabit(String name, String motivation) {
 
@@ -109,6 +109,22 @@ public class HabitTracker {
             }
         }
         return habits;
+    }
+    public String habitDateViewAll() {
+        List<Habit> habits = this.getHabits();
+        StringBuilder response = new StringBuilder();
+        for (Habit habit : habits) {
+            response.append("[ Habit: ")
+                    .append(habit.getName())
+                    .append(". Records: ");
+            List<LocalDateTime> records = this.getHabitRecords(habit.getId());
+            for (LocalDateTime record : records) {
+                response.append(this.formatHabitDate(record)).append(", ");
+            }
+            response.append("]");
+        }
+
+        return response.toString();
     }
 
 }
